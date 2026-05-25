@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package hu.akarnokd.rxjava3.jdk8interop;
 
 import java.util.NoSuchElementException;
 import java.util.concurrent.*;
 import java.util.stream.Stream;
-
 import io.reactivex.rxjava3.core.*;
 import io.reactivex.rxjava3.subjects.SingleSubject;
 
 /**
  * Utility methods, sources and operators supporting RxJava 2 and the Jdk 8 API
  * interoperation.
- * 
+ *
  * @since 0.1.0
  */
 public final class SingleInterop {
 
-    /** Utility class. */
+    /**
+     * Utility class.
+     */
     private SingleInterop() {
         throw new IllegalStateException("No instances!");
     }
@@ -43,11 +43,7 @@ public final class SingleInterop {
      * @return the converter function to be used with {@code Single.to()}
      */
     public static <T> SingleConverter<T, CompletionStage<T>> get() {
-        return c -> {
-            CompletableFuture<T> cf = new CompletableFuture<>();
-            c.subscribe(cf::complete, cf::completeExceptionally);
-            return cf;
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -56,11 +52,7 @@ public final class SingleInterop {
      * @return the converter function to be used with {@code Single.to()}
      */
     public static <T> SingleConverter<T, Stream<T>> toStream() {
-        return s -> {
-            ZeroOneIterator<T> zoi = new ZeroOneIterator<>();
-            s.subscribe(zoi);
-            return ZeroOneIterator.toStream(zoi);
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -71,20 +63,6 @@ public final class SingleInterop {
      * @return the new Single instance
      */
     public static <T> Single<T> fromFuture(CompletionStage<T> future) {
-        SingleSubject<T> cs = SingleSubject.create();
-
-        future.whenComplete((v, e) -> {
-            if (e != null) {
-                cs.onError(e);
-            } else
-            if (v != null) {
-                cs.onSuccess(v);
-            } else {
-                cs.onError(new NoSuchElementException());
-            }
-        });
-
-        return cs;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package hu.akarnokd.rxjava3.jdk8interop;
 
 import java.util.Optional;
-
 import org.reactivestreams.*;
-
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.exceptions.Exceptions;
 import io.reactivex.rxjava3.functions.Function;
@@ -46,15 +43,10 @@ final class FlowableMapOptional<T, R> extends Flowable<R> {
 
     @Override
     protected void subscribeActual(Subscriber<? super R> s) {
-        if (s instanceof ConditionalSubscriber) {
-            source.subscribe(new MapOptionalConditionalSubscriber<>((ConditionalSubscriber<? super R>)s, mapper));
-        } else {
-            source.subscribe(new MapOptionalSubscriber<>(s, mapper));
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    static final class MapOptionalSubscriber<T, R> extends BasicFuseableSubscriber<T, R>
-    implements ConditionalSubscriber<T> {
+    static final class MapOptionalSubscriber<T, R> extends BasicFuseableSubscriber<T, R> implements ConditionalSubscriber<T> {
 
         final Function<? super T, Optional<R>> mapper;
 
@@ -65,68 +57,26 @@ final class FlowableMapOptional<T, R> extends Flowable<R> {
 
         @Override
         public void onNext(T t) {
-            if (!tryOnNext(t)) {
-                upstream.request(1);
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public boolean tryOnNext(T t) {
-            if (done) {
-                return false;
-            }
-
-            if (sourceMode == ASYNC) {
-                downstream.onNext(null);
-                return true;
-            }
-
-            Optional<R> o;
-
-            try {
-                o = ObjectHelper.requireNonNull(mapper.apply(t), "The mapper returned a null Optional");
-            } catch (Throwable ex) {
-                Exceptions.throwIfFatal(ex);
-                fail(ex);
-                return false;
-            }
-
-            if (o.isPresent()) {
-                downstream.onNext(o.get());
-                return true;
-            }
-            return false;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public int requestFusion(int mode) {
-            return transitiveBoundaryFusion(mode);
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public R poll() throws Throwable {
-            for (;;) {
-                T t = qs.poll();
-
-                if (t == null) {
-                    return null;
-                }
-
-                Optional<R> o = mapper.apply(t);
-
-                if (o.isPresent()) {
-                    return o.get();
-                }
-
-                if (sourceMode != SYNC) {
-                    upstream.request(1);
-                }
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 
-    static final class MapOptionalConditionalSubscriber<T, R> extends BasicFuseableConditionalSubscriber<T, R>
-    implements ConditionalSubscriber<T> {
+    static final class MapOptionalConditionalSubscriber<T, R> extends BasicFuseableConditionalSubscriber<T, R> implements ConditionalSubscriber<T> {
 
         final Function<? super T, Optional<R>> mapper;
 
@@ -137,61 +87,22 @@ final class FlowableMapOptional<T, R> extends Flowable<R> {
 
         @Override
         public void onNext(T t) {
-            if (!tryOnNext(t)) {
-                upstream.request(1);
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public boolean tryOnNext(T t) {
-            if (done) {
-                return false;
-            }
-
-            if (sourceMode == ASYNC) {
-                return downstream.tryOnNext(null);
-            }
-
-            Optional<R> o;
-
-            try {
-                o = ObjectHelper.requireNonNull(mapper.apply(t), "The mapper returned a null Optional");
-            } catch (Throwable ex) {
-                Exceptions.throwIfFatal(ex);
-                fail(ex);
-                return false;
-            }
-
-            if (o.isPresent()) {
-                return downstream.tryOnNext(o.get());
-            }
-            return false;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public int requestFusion(int mode) {
-            return transitiveBoundaryFusion(mode);
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public R poll() throws Throwable {
-            for (;;) {
-                T t = qs.poll();
-
-                if (t == null) {
-                    return null;
-                }
-
-                Optional<R> o = mapper.apply(t);
-
-                if (o.isPresent()) {
-                    return o.get();
-                }
-
-                if (sourceMode != SYNC) {
-                    upstream.request(1);
-                }
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }

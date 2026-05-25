@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package hu.akarnokd.rxjava3.jdk8interop;
 
 import java.util.concurrent.*;
 import java.util.stream.Stream;
-
 import io.reactivex.rxjava3.core.*;
 import io.reactivex.rxjava3.subjects.CompletableSubject;
 
 /**
  * Utility methods, sources and operators supporting RxJava 2 and the Jdk 8 API
  * interoperation.
- * 
+ *
  * @since 0.1.0
  */
 public final class CompletableInterop {
 
-    /** Utility class. */
+    /**
+     * Utility class.
+     */
     private CompletableInterop() {
         throw new IllegalStateException("No instances!");
     }
@@ -41,11 +41,7 @@ public final class CompletableInterop {
      * @return the converter function to be used with {@code Completable.to()}
      */
     public static <T> CompletableConverter<CompletionStage<T>> await() {
-        return c -> {
-            CompletableFuture<T> cf = new CompletableFuture<>();
-            c.subscribe(() -> cf.complete(null), cf::completeExceptionally);
-            return cf;
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -54,11 +50,7 @@ public final class CompletableInterop {
      * @return the converter function to be used with {@code Completable.to()}
      */
     public static <T> CompletableConverter<Stream<T>> toStream() {
-        return c -> {
-            ZeroOneIterator<T> zoi = new ZeroOneIterator<>();
-            c.subscribe(zoi);
-            return ZeroOneIterator.toStream(zoi);
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -67,16 +59,6 @@ public final class CompletableInterop {
      * @return the new Completable instance
      */
     public static Completable fromFuture(CompletionStage<?> future) {
-        CompletableSubject cs = CompletableSubject.create();
-
-        future.whenComplete((v, e) -> {
-            if (e != null) {
-                cs.onError(e);
-            } else {
-                cs.onComplete();
-            }
-        });
-
-        return cs;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package hu.akarnokd.rxjava3.jdk8interop;
 
 import java.util.Optional;
-
 import io.reactivex.rxjava3.core.*;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.exceptions.Exceptions;
@@ -45,7 +43,7 @@ final class MaybeMapOptional<T, R> extends Maybe<R> {
 
     @Override
     protected void subscribeActual(MaybeObserver<? super R> observer) {
-        source.subscribe(new MapOptionalObserver<>(observer, mapper));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     static final class MapOptionalObserver<T, R> implements MaybeObserver<T>, Disposable {
@@ -64,51 +62,32 @@ final class MaybeMapOptional<T, R> extends Maybe<R> {
 
         @Override
         public void dispose() {
-            d.dispose();
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public boolean isDisposed() {
-            return d.isDisposed();
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public void onSubscribe(Disposable d) {
-            if (DisposableHelper.validate(this.d, d)) {
-                this.d = d;
-
-                actual.onSubscribe(this);
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public void onSuccess(T value) {
-            Optional<R> v;
-
-            try {
-                v = ObjectHelper.requireNonNull(mapper.apply(value), "The mapper returned a null Optional");
-            } catch (Throwable ex) {
-                Exceptions.throwIfFatal(ex);
-                actual.onError(ex);
-                return;
-            }
-
-            if (v.isPresent()) {
-                actual.onSuccess(v.get());
-            } else {
-                actual.onComplete();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public void onError(Throwable e) {
-            actual.onError(e);
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public void onComplete() {
-            actual.onComplete();
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
-
     }
 }

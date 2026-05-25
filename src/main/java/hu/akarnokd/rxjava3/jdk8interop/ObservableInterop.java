@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package hu.akarnokd.rxjava3.jdk8interop;
 
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.stream.*;
-
 import io.reactivex.rxjava3.core.*;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.internal.functions.ObjectHelper;
@@ -29,12 +27,14 @@ import io.reactivex.rxjava3.subjects.AsyncSubject;
 /**
  * Utility methods, sources and operators supporting RxJava 2 and the Jdk 8 API
  * interoperation.
- * 
+ *
  * @since 0.1.0
  */
 public final class ObservableInterop {
 
-    /** Utility class. */
+    /**
+     * Utility class.
+     */
     private ObservableInterop() {
         throw new IllegalStateException("No instances!");
     }
@@ -51,8 +51,7 @@ public final class ObservableInterop {
      * @return the new Observable instance
      */
     public static <T> Observable<T> fromStream(Stream<T> stream) {
-        ObjectHelper.requireNonNull(stream, "stream is null");
-        return RxJavaPlugins.onAssembly(new ObservableFromStream<>(stream));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -62,7 +61,7 @@ public final class ObservableInterop {
      * @return the new Observable instance
      */
     public static <T> Observable<T> fromOptional(Optional<T> opt) {
-        return opt.map(Observable::just).orElseGet(Observable::empty);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -74,16 +73,7 @@ public final class ObservableInterop {
      * @return the new Observable instance
      */
     public static <T> Observable<T> fromFuture(CompletionStage<T> cs) {
-        AsyncSubject<T> ap = AsyncSubject.create();
-        cs.whenComplete((v, e) -> {
-            if (e != null) {
-                ap.onError(e);
-            } else {
-                ap.onNext(v);
-                ap.onComplete();
-            }
-        });
-        return ap;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -96,7 +86,7 @@ public final class ObservableInterop {
      * @return the Transformer instance to be used with {@code Observable.compose()}
      */
     public static <T, A, R> ObservableTransformer<T, R> collect(Collector<T, A, R> collector) {
-        return f -> RxJavaPlugins.onAssembly(new ObservableCollector<>(f, collector));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -106,11 +96,7 @@ public final class ObservableInterop {
      * @return the converter function to be used via {@code Observable.to}.
      */
     public static <T> ObservableConverter<T, CompletionStage<T>> first() {
-        return f -> {
-            CompletableFuture<T> cf = new CompletableFuture<>();
-            f.firstOrError().subscribe(cf::complete, cf::completeExceptionally);
-            return cf;
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -121,11 +107,7 @@ public final class ObservableInterop {
      * @return the converter function to be used with {@code Observable.to}.
      */
     public static <T> ObservableConverter<T, CompletionStage<T>> single() {
-        return f -> {
-            CompletableFuture<T> cf = new CompletableFuture<>();
-            f.singleOrError().subscribe(cf::complete, cf::completeExceptionally);
-            return cf;
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -135,11 +117,7 @@ public final class ObservableInterop {
      * @return the converter function to be used with {@code Observable.to}.
      */
     public static <T> ObservableConverter<T, CompletionStage<T>> last() {
-        return f -> {
-            CompletableFuture<T> cf = new CompletableFuture<>();
-            f.lastOrError().subscribe(cf::complete, cf::completeExceptionally);
-            return cf;
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -150,7 +128,7 @@ public final class ObservableInterop {
      * @return the converter function to be used with {@code Observable.to}.
      */
     public static <T> ObservableConverter<T, Stream<T>> toStream() {
-        return f -> ZeroOneIterator.toStream(f.blockingIterable().iterator());
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -159,7 +137,7 @@ public final class ObservableInterop {
      * @return the converter Function to be used with {@code Observable.to()}.
      */
     public static <T> ObservableConverter<T, Optional<T>> firstElement() {
-        return o -> Optional.ofNullable(o.blockingFirst(null));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -168,7 +146,7 @@ public final class ObservableInterop {
      * @return the converter Function to be used with {@code Observable.to()}.
      */
     public static <T> ObservableConverter<T, Optional<T>> lastElement() {
-        return o -> Optional.ofNullable(o.blockingLast(null));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -180,7 +158,7 @@ public final class ObservableInterop {
      * @return the Transformer instance to be used with {@code Observable.compose()}
      */
     public static <T, R> ObservableTransformer<T, R> mapOptional(Function<? super T, Optional<R>> mapper) {
-        return f -> RxJavaPlugins.onAssembly(new ObservableMapOptional<>(f, mapper));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -191,7 +169,6 @@ public final class ObservableInterop {
      * @return the new Transformer instance
      */
     public static <T, R> ObservableTransformer<T, R> flatMapStream(Function<? super T, ? extends Stream<R>> mapper) {
-        return o -> o.concatMap(v -> fromStream(mapper.apply(v)));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package hu.akarnokd.rxjava3.jdk8interop;
 
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
-
 import io.reactivex.rxjava3.core.*;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.exceptions.Exceptions;
@@ -42,22 +40,10 @@ final class ObservableFromStream<T> extends Observable<T> {
 
     @Override
     protected void subscribeActual(Observer<? super T> observer) {
-        Iterator<T> iterator;
-        try {
-            iterator = stream.iterator();
-        } catch (Throwable ex) {
-            Exceptions.throwIfFatal(ex);
-            EmptyDisposable.error(ex, observer);
-            return;
-        }
-        StreamDisposable<T> d = new StreamDisposable<>(observer, stream, iterator);
-        observer.onSubscribe(d);
-        d.run();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    static final class StreamDisposable<T>
-    extends AtomicInteger
-    implements Disposable {
+    static final class StreamDisposable<T> extends AtomicInteger implements Disposable {
 
         private static final long serialVersionUID = -7262727127695950226L;
 
@@ -67,86 +53,28 @@ final class ObservableFromStream<T> extends Observable<T> {
 
         volatile Iterator<T> iterator;
 
-        StreamDisposable(Observer<? super T> downstream,
-                AutoCloseable stream, Iterator<T> iterator) {
+        StreamDisposable(Observer<? super T> downstream, AutoCloseable stream, Iterator<T> iterator) {
             this.downstream = downstream;
             this.stream = stream;
             this.iterator = iterator;
         }
 
         void run() {
-            Iterator<T> iterator = this.iterator;
-
-            for (;;) {
-
-                if (getAndIncrement() == 0) {
-                    boolean hasNext;
-
-                    try {
-                        hasNext = iterator.hasNext();
-                    } catch (Throwable ex) {
-                        Exceptions.throwIfFatal(ex);
-                        close();
-                        downstream.onError(ex);
-                        break;
-                    }
-
-                    if (!hasNext) {
-                        close();
-                        downstream.onComplete();
-                        break;
-                    }
-
-                    if (get() != 1) {
-                        close();
-                        break;
-                    }
-                } else {
-                    break;
-                }
-
-
-                T next;
-
-                try {
-                    next = ObjectHelper.requireNonNull(iterator.next(), "The Iterator.next returned a null value");
-                } catch (Throwable ex) {
-                    Exceptions.throwIfFatal(ex);
-                    close();
-                    downstream.onError(ex);
-                    break;
-                }
-                if (decrementAndGet() != 0) {
-                    close();
-                    break;
-                }
-
-                downstream.onNext(next);
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         void close() {
-            AutoCloseable ac = stream;
-            stream = null;
-            iterator = null;
-            try {
-                ac.close();
-            } catch (Throwable ex) {
-                Exceptions.throwIfFatal(ex);
-                RxJavaPlugins.onError(ex);
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public void dispose() {
-            if (getAndIncrement() == 0) {
-                close();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public boolean isDisposed() {
-            return iterator == null;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }

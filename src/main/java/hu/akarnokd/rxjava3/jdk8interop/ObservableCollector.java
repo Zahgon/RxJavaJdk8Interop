@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package hu.akarnokd.rxjava3.jdk8interop;
 
 import java.util.function.*;
 import java.util.stream.Collector;
-
 import io.reactivex.rxjava3.core.*;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.exceptions.Exceptions;
@@ -46,27 +44,10 @@ final class ObservableCollector<T, A, R> extends Observable<R> {
 
     @Override
     protected void subscribeActual(Observer<? super R> s) {
-        A initialValue;
-        BiConsumer<A, T> accumulator;
-        Function<A, R> finisher;
-
-        try {
-            initialValue = collector.supplier().get();
-
-            accumulator = collector.accumulator();
-
-            finisher = collector.finisher();
-        } catch (Throwable ex) {
-            Exceptions.throwIfFatal(ex);
-            EmptyDisposable.error(ex, s);
-            return;
-        }
-
-        source.subscribe(new CollectorObserver<>(s, initialValue, accumulator, finisher));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    static final class CollectorObserver<T, A, R> extends DeferredScalarDisposable<R>
-    implements Observer<T> {
+    static final class CollectorObserver<T, A, R> extends DeferredScalarDisposable<R> implements Observer<T> {
 
         private static final long serialVersionUID = 2129956429647866524L;
 
@@ -80,8 +61,7 @@ final class ObservableCollector<T, A, R> extends Observable<R> {
 
         boolean done;
 
-        public CollectorObserver(Observer<? super R> actual,
-                A initialValue, BiConsumer<A, T> accumulator, Function<A, R> finisher) {
+        public CollectorObserver(Observer<? super R> actual, A initialValue, BiConsumer<A, T> accumulator, Function<A, R> finisher) {
             super(actual);
             this.intermediate = initialValue;
             this.accumulator = accumulator;
@@ -90,59 +70,27 @@ final class ObservableCollector<T, A, R> extends Observable<R> {
 
         @Override
         public void onSubscribe(Disposable d) {
-            if (DisposableHelper.validate(this.upstream, d)) {
-                this.upstream = d;
-
-                downstream.onSubscribe(this);
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public void onNext(T t) {
-            if (!done) {
-                try {
-                    accumulator.accept(intermediate, t);
-                } catch (Throwable ex) {
-                    Exceptions.throwIfFatal(ex);
-                    upstream.dispose();
-                    onError(ex);
-                }
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public void onError(Throwable t) {
-            if (done) {
-                RxJavaPlugins.onError(t);
-            } else {
-                done = true;
-                intermediate = null;
-                downstream.onError(t);
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public void onComplete() {
-            if (!done) {
-                R r;
-
-                try {
-                    r = finisher.apply(intermediate);
-                } catch (Throwable ex) {
-                    Exceptions.throwIfFatal(ex);
-                    onError(ex);
-                    return;
-                }
-
-                intermediate = null;
-                complete(r);
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public void dispose() {
-            super.dispose();
-            upstream.dispose();
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }

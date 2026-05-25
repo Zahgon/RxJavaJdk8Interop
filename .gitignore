@@ -22,3 +22,7 @@ bin/
 .pmd
 .ruleset
 local.properties
+.aider*
+logs/
+.commit0_scripts/
+.github/workflows/

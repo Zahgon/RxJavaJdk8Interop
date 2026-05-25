@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package hu.akarnokd.rxjava3.jdk8interop;
 
 import java.util.Optional;
-
 import io.reactivex.rxjava3.core.*;
 import io.reactivex.rxjava3.exceptions.Exceptions;
 import io.reactivex.rxjava3.functions.Function;
@@ -43,7 +41,7 @@ final class ObservableMapOptional<T, R> extends Observable<R> {
 
     @Override
     protected void subscribeActual(Observer<? super R> s) {
-        source.subscribe(new MapOptionalObserver<>(s, mapper));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     static final class MapOptionalObserver<T, R> extends BasicFuseableObserver<T, R> {
@@ -57,50 +55,17 @@ final class ObservableMapOptional<T, R> extends Observable<R> {
 
         @Override
         public void onNext(T t) {
-            if (done) {
-                return;
-            }
-
-            if (sourceMode == ASYNC) {
-                downstream.onNext(null);
-                return;
-            }
-
-            Optional<R> o;
-
-            try {
-                o = ObjectHelper.requireNonNull(mapper.apply(t), "The mapper returned a null Optional");
-            } catch (Throwable ex) {
-                Exceptions.throwIfFatal(ex);
-                fail(ex);
-                return;
-            }
-
-            if (o.isPresent()) {
-                downstream.onNext(o.get());
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public int requestFusion(int mode) {
-            return transitiveBoundaryFusion(mode);
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public R poll() throws Throwable {
-            for (;;) {
-                T t = qd.poll();
-
-                if (t == null) {
-                    return null;
-                }
-
-                Optional<R> o = mapper.apply(t);
-
-                if (o.isPresent()) {
-                    return o.get();
-                }
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }

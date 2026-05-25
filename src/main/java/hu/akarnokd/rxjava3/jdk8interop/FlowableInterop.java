@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package hu.akarnokd.rxjava3.jdk8interop;
 
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.stream.*;
-
 import io.reactivex.rxjava3.core.*;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
@@ -28,12 +26,14 @@ import io.reactivex.rxjava3.processors.AsyncProcessor;
 /**
  * Utility methods, sources and operators supporting RxJava 2 and the Jdk 8 API
  * interoperation.
- * 
+ *
  * @since 0.1.0
  */
 public final class FlowableInterop {
 
-    /** Utility class. */
+    /**
+     * Utility class.
+     */
     private FlowableInterop() {
         throw new IllegalStateException("No instances!");
     }
@@ -46,7 +46,7 @@ public final class FlowableInterop {
      * @return the new Flowable instance
      */
     public static <T> Flowable<T> fromStream(Stream<T> stream) {
-        return RxJavaPlugins.onAssembly(new FlowableFromStream<>(stream));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -56,7 +56,7 @@ public final class FlowableInterop {
      * @return the new Flowable instance
      */
     public static <T> Flowable<T> fromOptional(Optional<T> opt) {
-        return opt.map(Flowable::just).orElseGet(Flowable::empty);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -68,16 +68,7 @@ public final class FlowableInterop {
      * @return the new Flowable instance
      */
     public static <T> Flowable<T> fromFuture(CompletionStage<T> cs) {
-        AsyncProcessor<T> ap = AsyncProcessor.create();
-        cs.whenComplete((v, e) -> {
-            if (e != null) {
-                ap.onError(e);
-            } else {
-                ap.onNext(v);
-                ap.onComplete();
-            }
-        });
-        return ap;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -90,7 +81,7 @@ public final class FlowableInterop {
      * @return the Transformer instance to be used with {@code Flowable.compose()}
      */
     public static <T, A, R> FlowableTransformer<T, R> collect(Collector<T, A, R> collector) {
-        return f -> RxJavaPlugins.onAssembly(new FlowableCollector<>(f, collector));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -100,11 +91,7 @@ public final class FlowableInterop {
      * @return the converter function to be used via {@code Flowable.to}.
      */
     public static <T> FlowableConverter<T, CompletionStage<T>> first() {
-        return f -> {
-            CompletableFuture<T> cf = new CompletableFuture<>();
-            f.firstOrError().subscribe(cf::complete, cf::completeExceptionally);
-            return cf;
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -115,11 +102,7 @@ public final class FlowableInterop {
      * @return the converter function to be used with {@code Flowable.to}.
      */
     public static <T> FlowableConverter<T, CompletionStage<T>> single() {
-        return f -> {
-            CompletableFuture<T> cf = new CompletableFuture<>();
-            f.singleOrError().subscribe(cf::complete, cf::completeExceptionally);
-            return cf;
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -129,11 +112,7 @@ public final class FlowableInterop {
      * @return the converter function to be used with {@code Flowable.to}.
      */
     public static <T> FlowableConverter<T, CompletionStage<T>> last() {
-        return f -> {
-            CompletableFuture<T> cf = new CompletableFuture<>();
-            f.lastOrError().subscribe(cf::complete, cf::completeExceptionally);
-            return cf;
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -144,7 +123,7 @@ public final class FlowableInterop {
      * @return the converter function to be used with {@code Flowable.to}.
      */
     public static <T> FlowableConverter<T, Stream<T>> toStream() {
-        return f -> ZeroOneIterator.toStream(f.blockingIterable().iterator());
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -153,7 +132,7 @@ public final class FlowableInterop {
      * @return the converter Function to be used with {@code Flowable.to()}.
      */
     public static <T> FlowableConverter<T, Optional<T>> firstElement() {
-        return f -> Optional.ofNullable(f.blockingFirst(null));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -162,7 +141,7 @@ public final class FlowableInterop {
      * @return the converter Function to be used with {@code Flowable.to()}.
      */
     public static <T> FlowableConverter<T, Optional<T>> lastElement() {
-        return f -> Optional.ofNullable(f.blockingLast(null));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -173,7 +152,7 @@ public final class FlowableInterop {
      * @return the Transformer instance to be used with {@code Flowable.compose()}
      */
     public static <T, R> FlowableTransformer<T, R> flatMapStream(Function<? super T, ? extends Stream<R>> mapper) {
-        return f -> f.concatMap(v -> fromStream(mapper.apply(v)));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -185,7 +164,6 @@ public final class FlowableInterop {
      * @return the Transformer instance to be used with {@code Flowable.compose()}
      */
     public static <T, R> FlowableTransformer<T, R> mapOptional(Function<? super T, Optional<R>> mapper) {
-        return f -> RxJavaPlugins.onAssembly(new FlowableMapOptional<>(f, mapper));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

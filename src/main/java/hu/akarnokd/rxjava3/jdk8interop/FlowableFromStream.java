@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package hu.akarnokd.rxjava3.jdk8interop;
 
 import java.util.Iterator;
 import java.util.concurrent.atomic.*;
 import java.util.stream.Stream;
-
 import org.reactivestreams.*;
-
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.exceptions.Exceptions;
 import io.reactivex.rxjava3.internal.functions.ObjectHelper;
@@ -44,24 +41,7 @@ final class FlowableFromStream<T> extends Flowable<T> {
 
     @Override
     protected void subscribeActual(Subscriber<? super T> s) {
-        Iterator<T> iterator;
-        boolean hasNext;
-        try {
-            iterator = stream.iterator();
-            hasNext = iterator.hasNext();
-            if (!hasNext) {
-                stream.close();
-            }
-        } catch (Throwable ex) {
-            Exceptions.throwIfFatal(ex);
-            EmptySubscription.error(ex, s);
-            return;
-        }
-        if (!hasNext) {
-            EmptySubscription.complete(s);
-            return;
-        }
-        s.onSubscribe(new StreamSubscription<>(s, stream, iterator));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     static final class StreamSubscription<T> extends AtomicInteger implements Subscription {
@@ -85,96 +65,20 @@ final class FlowableFromStream<T> extends Flowable<T> {
 
         @Override
         public void request(long n) {
-            if (SubscriptionHelper.validate(n)) {
-                if (BackpressureHelper.add(requested, n) == 0) {
-                    run(n);
-                }
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         void run(long requested) {
-            Iterator<T> iterator = this.iterator;
-
-            long emitted = 0L;
-            for (;;) {
-
-                if (getAndIncrement() == 0) {
-                    T next;
-
-                    try {
-                        next = ObjectHelper.requireNonNull(iterator.next(), "The Iterator.next returned a null value");
-                    } catch (Throwable ex) {
-                        Exceptions.throwIfFatal(ex);
-                        close();
-                        downstream.onError(ex);
-                        return;
-                    }
-
-                    downstream.onNext(next);
-                    emitted++;
-
-                    if (get() != 1) {
-                        close();
-                        return;
-                    }
-                } else {
-                    return;
-                }
-
-                boolean hasNext;
-
-                try {
-                    hasNext = iterator.hasNext();
-                } catch (Throwable ex) {
-                    Exceptions.throwIfFatal(ex);
-                    close();
-                    downstream.onError(ex);
-                    return;
-                }
-
-                if (decrementAndGet() != 0) {
-                    close();
-                    return;
-                }
-
-                if (!hasNext) {
-                    close();
-                    downstream.onComplete();
-                    return;
-                }
-
-                if (emitted == requested) {
-
-                    requested = this.requested.get();
-
-                    if (emitted == requested) {
-                        if (this.requested.compareAndSet(requested, 0)) {
-                            return;
-                        }
-                        emitted = 0L;
-                        requested = this.requested.get();
-                    }
-                }
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         void close() {
-            AutoCloseable ac = stream;
-            stream = null;
-            iterator = null;
-            try {
-                ac.close();
-            } catch (Throwable ex) {
-                Exceptions.throwIfFatal(ex);
-                RxJavaPlugins.onError(ex);
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @Override
         public void cancel() {
-            if (getAndIncrement() == 0) {
-                close();
-            }
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }

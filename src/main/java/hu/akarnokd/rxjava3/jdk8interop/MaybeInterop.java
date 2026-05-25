@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package hu.akarnokd.rxjava3.jdk8interop;
 
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.stream.Stream;
-
 import io.reactivex.rxjava3.core.*;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
@@ -28,12 +26,14 @@ import io.reactivex.rxjava3.subjects.MaybeSubject;
 /**
  * Utility methods, sources and operators supporting RxJava 2 and the Jdk 8 API
  * interoperation.
- * 
+ *
  * @since 0.1.0
  */
 public final class MaybeInterop {
 
-    /** Utility class. */
+    /**
+     * Utility class.
+     */
     private MaybeInterop() {
         throw new IllegalStateException("No instances!");
     }
@@ -46,7 +46,7 @@ public final class MaybeInterop {
      * @return the new Maybe instance
      */
     public static <T> Maybe<T> fromOptional(Optional<T> opt) {
-        return opt.map(Maybe::just).orElseGet(Maybe::empty);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -57,18 +57,7 @@ public final class MaybeInterop {
      * @return the new Maybe instance
      */
     public static <T> Maybe<T> fromFuture(CompletionStage<T> cs) {
-        MaybeSubject<T> ms = MaybeSubject.create();
-        cs.whenComplete((v, e) -> {
-            if (e != null) {
-                ms.onError(e);
-            } else
-            if (v != null) {
-                ms.onSuccess(v);
-            } else {
-                ms.onComplete();
-            }
-        });
-        return ms;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -79,11 +68,7 @@ public final class MaybeInterop {
      * @return the converter function to be used with {@code Maybe.to()}
      */
     public static <T> MaybeConverter<T, CompletionStage<T>> get() {
-        return m -> {
-            CompletableFuture<T> cf = new CompletableFuture<>();
-            m.subscribe(cf::complete, cf::completeExceptionally, () -> cf.complete(null));
-            return cf;
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -93,11 +78,7 @@ public final class MaybeInterop {
      * @return the converter function to be used with {@code Maybe.to()}
      */
     public static <T> MaybeConverter<T, Stream<T>> toStream() {
-        return m -> {
-            ZeroOneIterator<T> zoi = new ZeroOneIterator<>();
-            m.subscribe(zoi);
-            return ZeroOneIterator.toStream(zoi);
-        };
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -106,7 +87,7 @@ public final class MaybeInterop {
      * @return the converter Function to be used with {@code Maybe.to()}.
      */
     public static <T> MaybeConverter<T, Optional<T>> element() {
-        return m -> Optional.ofNullable(m.blockingGet());
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -118,7 +99,6 @@ public final class MaybeInterop {
      * @return the Transformer instance to be used with {@code Flowable.compose()}
      */
     public static <T, R> MaybeTransformer<T, R> mapOptional(Function<? super T, Optional<R>> mapper) {
-        return m -> RxJavaPlugins.onAssembly(new MaybeMapOptional<>(m, mapper));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }
